@@ -16,11 +16,8 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Install a simple HTTP server to serve the static files
-RUN npm install -g serve
-
 # Expose the port the app runs on
-EXPOSE 5000
+EXPOSE 4173
 
 # Command to run the app
-CMD ["serve", "-s", "build"]
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]

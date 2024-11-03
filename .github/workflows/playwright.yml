@@ -32,12 +32,12 @@ jobs:
       run: docker build -t react-app .
 
     - name: Run Docker container
-      run: docker run -d -p 5173:5000 react-app
+      run: docker run -d -p 4173:4173 react-app
 
     - name: Wait for container to be ready
       run: |
         for i in {1..30}; do
-          curl --fail http://localhost:5173 && break
+          curl --fail http://localhost:4173 && break
           echo "Waiting for container to be ready..."
           sleep 2
         done
