@@ -1,5 +1,6 @@
 # Use an official node image as the base image
 FROM node:20-alpine
+FROM mcr.microsoft.com/playwright:focal
 
 # Set the working directory
 WORKDIR /app
@@ -9,6 +10,8 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
+RUN npx playwright install-deps
+RUN npx playwright install
 
 # Copy the rest of the application code
 COPY . .
@@ -20,4 +23,4 @@ RUN npm run build
 EXPOSE 4173
 
 # Command to run the app
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "preview"]

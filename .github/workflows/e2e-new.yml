@@ -1,0 +1,61 @@
+name: Build, Serve React App in Docker, and Run Playwright Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Step 3: Install dependencies (including Playwright)
+      - name: Install dependencies
+        run: |
+          npm install
+          # Install Playwright browsers
+          npx playwright install --with-deps
+
+      # Step 4: Build the React app
+      - name: Build the React app
+        run: npm run build
+
+      # Step 5: Set up Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # Step 6: Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t react-app:latest .
+
+      # Step 7: Run Docker container
+      - name: Run Docker container
+        run: |
+          docker run -d -p 4173:4173 react-app:latest
+        # Wait for the server to start up
+        env:
+          REACT_APP_URL: http://localhost:4173
+
+      # Step 8: Run Playwright tests
+      - name: Run Playwright tests
+        run: |
+          # Wait for the Docker container to be up
+          sleep 5
+          # Run Playwright tests against the running app
+          npx playwright test --project=chromium
+        env:
+          REACT_APP_URL: http://localhost:5000
