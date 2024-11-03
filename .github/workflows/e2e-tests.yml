@@ -30,7 +30,7 @@ jobs:
 
       # Build the Docker image for E2E tests.
       - name: Build E2E Docker image
-        working-directory: ./
+        working-directory: e2e
         run: docker build -t playwright-tests .
 
       # Execute the E2E tests 
