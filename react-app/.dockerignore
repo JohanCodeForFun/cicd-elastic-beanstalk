@@ -1,6 +1,13 @@
-node_modules
-build
-.dockerignore
-Dockerfile
-.git
-.gitignore
+# Ignore everything
+**
+
+# Allow these folders in image
+!public/**
+!src/**
+
+# Allow these files in image
+!.env
+!package.json
+!tsconfig.json
+!yarn.lock
+!index.html
