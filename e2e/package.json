@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2etest": "playwright test ./src",
-    "e2etest:ci": "CI=true yarn e2etest"
+    "e2etest": "playwright test ./tests",
+    "e2etest:ci": "CI=true npm run e2etest"
   },
   "keywords": [],
   "author": "",
