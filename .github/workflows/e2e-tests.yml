@@ -24,6 +24,10 @@ jobs:
       - name: Start local environment with Docker Compose
         run: docker compose up -d
 
+      # DEBUG
+      - name: List files
+        run: ls -la
+
       # Build the Docker image for E2E tests.
       - name: Build E2E Docker image
         working-directory: ./
