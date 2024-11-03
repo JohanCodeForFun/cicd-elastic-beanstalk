@@ -42,7 +42,6 @@ jobs:
           mkdir -p logs
 
           # Export each Docker container's logs to files in the "logs" directory.
-          docker logs express-app >& logs/express-app.log
           docker logs react-app >& logs/react-app.log
           docker logs playwright-tests >& logs/playwright-tests.log
 
