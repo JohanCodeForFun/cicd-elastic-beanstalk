@@ -24,13 +24,6 @@ jobs:
       - name: Start local environment with Docker Compose
         run: docker compose up -d
 
-      # DEBUG
-      - name: List all files
-        run: ls -la
-
-      - name: List files in e2e directory
-        run: ls -la ./e2e
-
       # Build the Docker image for E2E tests.
       - name: Build E2E Docker image
         working-directory: ./e2e
@@ -41,6 +34,10 @@ jobs:
         working-directory: ./e2e
         run: docker run --rm -v $(pwd)/e2e-report:/app/e2e-report --name playwright-tests --network=host playwright-tests yarn e2etest:ci
 
+      # List running Docker containers
+      - name: List running Docker containers
+        run: docker ps -a
+
       # Prepare the logs for all containers.
       - name: Prepare container logs
         if: always() # Ensure logs are captured, even if the tests fail.
@@ -49,8 +46,8 @@ jobs:
           mkdir -p logs
 
           # Export each Docker container's logs to files in the "logs" directory.
-          docker logs react-app >& logs/react-app.log
-          docker logs playwright-tests >& logs/playwright-tests.log
+          docker logs react-app >& logs/react-app.log || echo "react-app container not found"
+          docker logs playwright-tests >& logs/playwright-tests.log || echo "playwright-tests container not found"
 
       # Upload the logs for all containers as an artifact.
       - name: Upload container logs
