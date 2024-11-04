@@ -31,7 +31,7 @@ jobs:
         run: docker build -t react-app .
 
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x "*.git*" "*__pycache__*" "*.pytest_cache*" "*.venv*" "node_modules/*" "build/*" "dist/*"
+        run: zip -r deploy.zip build .ebextensions -x "*.git*" "*__pycache__*" "*.pytest_cache*" "*.venv*" "node_modules/*" "dist/*"
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
