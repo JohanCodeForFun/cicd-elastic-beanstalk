@@ -43,12 +43,6 @@ jobs:
           cat react-app/package.json
           echo "Contents of react/dist directory:"
           ls -l react-app/dist
-          mkdir -p deploy
-          cp -r ./react-app/dist/* deploy/
-          cp ./react-app/package.json deploy/
-          cp ./react-app/Procfile deploy/
-          echo "Contents of deploy directory:"
-          ls -l deploy
 
           zip -r deploy.zip . -x '*.git*'
 
