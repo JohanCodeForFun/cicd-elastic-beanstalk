@@ -36,9 +36,9 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
-          cp -r ./react-app/build deploy/
-          cp ./react-app/package.json deploy/
-          cp ./react-app/Procfile deploy/
+          cp -r ./build deploy/
+          cp ./package.json deploy/
+          cp ./Procfile deploy/
           zip -r deploy.zip deploy .ebextensions .platform -x "*.git*" "*__pycache__*" "*.pytest_cache*" "*.venv*" "node_modules/*"
 
       - name: Deploy to Elastic Beanstalk
