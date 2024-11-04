@@ -39,6 +39,10 @@ jobs:
           cp -r ./react-app/dist/* deploy/
           cp ./react-app/package.json deploy/
           cp ./react-app/Procfile deploy/
+          echo "Contents of deploy directory:"
+          ls -l deploy
+          echo "Contents of root directory:"
+          ls -l
           zip -r deploy.zip deploy .ebextensions .platform -x "*.git*" "*__pycache__*" "*.pytest_cache*" "*.venv*" "node_modules/*"
 
       - name: Deploy to Elastic Beanstalk
