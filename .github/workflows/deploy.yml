@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
@@ -31,7 +34,10 @@ jobs:
         run: docker build -t react-app .
 
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x "*.git*" "*__pycache__*" "*.pytest_cache*" "*.venv*" "node_modules/*" "build/*" "dist/*"
+        run: |
+          mkdir -p deploy
+          cp -r ./react-app/build/* deploy/
+          zip -r deploy.zip deploy
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -43,5 +49,4 @@ jobs:
           version_label: ${{ github.sha }}
           region: eu-north-1
           deployment_package: deploy.zip
-          use_existing_version_if_available: true
           wait_for_deployment: true
