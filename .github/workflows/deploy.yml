@@ -20,7 +20,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Build and start the "express-app" and "react-app" containers in detached mode to avoid blocking the workflow.
+      - name: Build Docker image for React app
+        run: docker build -t react-app .
+
+      # Build and start the "react-app" container in detached mode to avoid blocking the workflow.
       - name: Start local environment with Docker Compose
         run: docker compose up -d
 
@@ -64,3 +67,26 @@ jobs:
         with:
           name: E2E Test Report
           path: e2e/e2e-report
+
+  deploy:
+    needs: e2e-tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x "*.git*" "*__pycache__*" "*.pytest_cache*" "*.venv*" "node_modules/*" "build/*" "dist/*"
+    
+    - name: Deploy to Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v21
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: cicd
+        environment_name: Cicd-env-1
+        version_label: ${{ github.sha }}
+        region: eu-north-1
+        deployment_package: deploy.zip
+        wait_for_deployment: true
