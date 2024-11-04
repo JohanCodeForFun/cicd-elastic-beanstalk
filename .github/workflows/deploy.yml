@@ -37,6 +37,10 @@ jobs:
         run: |
           echo "Contents of root directory:"
           ls -l
+          echo "Contents of react directory:"
+          ls -l react-app
+          echo "Contents of react/dist directory:"
+          ls -l react-app/dist
           mkdir -p deploy
           cp -r ./react-app/dist/* deploy/
           cp ./react-app/package.json deploy/
