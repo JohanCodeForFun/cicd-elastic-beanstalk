@@ -39,6 +39,8 @@ jobs:
           ls -l
           echo "Contents of react directory:"
           ls -l react-app
+          echo "Contents of package.json:"
+          cat react-app/package.json
           echo "Contents of react/dist directory:"
           ls -l react-app/dist
           mkdir -p deploy
