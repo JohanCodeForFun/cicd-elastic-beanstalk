@@ -40,6 +40,22 @@ jobs:
 
           zip -r deploy.zip react-app -x '*.git*'
 
+
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+        with:
+          # replaces '[:\.]+' in the timestamp with '-'
+          pattern: '[:\.]+'
+          string: "${{ steps.current-time.outputs.time }}"
+          replace-with: '-'
+          flags: 'g'
+
+
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -47,7 +63,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: cicd
           environment_name: Cicd-env-1
-          version_label: ${{ github.sha }}
+          version_label: ${{ steps.format-time.outputs.replaced }}
           region: eu-north-1
           deployment_package: deploy.zip
           wait_for_deployment: true
