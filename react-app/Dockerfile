@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20 AS builder
 
 WORKDIR /app
 COPY package*.json ./
@@ -9,6 +9,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 4173
-
-CMD ["npm", "run", "preview", "--", "--host"]
+FROM nginx 
+EXPOSE 80 
+COPY --from=builder /app/dist /usr/share/nginx/html
