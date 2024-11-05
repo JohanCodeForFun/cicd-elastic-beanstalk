@@ -38,10 +38,6 @@ jobs:
         run: |
           echo "Contents of root directory:"
           ls -l
-          echo "Contents of react directory:"
-          ls -l react-app
-          echo "Contents of package.json:"
-          cat react-app/package.json
 
           zip -r deploy.zip . -x '*.git*'
 
