@@ -34,6 +34,7 @@ jobs:
         run: docker build -t react-app .
 
       - name: Generate deployment package
+        working-directory: ./react-app
         run: |
           echo "Contents of root directory:"
           ls -l
