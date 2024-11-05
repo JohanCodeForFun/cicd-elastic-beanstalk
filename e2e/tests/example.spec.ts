@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test('has title', async ({ page }) => {
-  await page.goto('http://localhost:4173/');
+  await page.goto('http://localhost:80/');
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Vite \+ React \+ TS/);
 });
 
 test('working count button', async ({ page }) => {
-  await page.goto('http://localhost:4173/');
+  await page.goto('http://localhost:80/');
 
   const button = page.locator('button');
 

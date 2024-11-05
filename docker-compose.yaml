@@ -4,4 +4,4 @@ services:
     build:
       context: ./react-app
     ports:
-      - 4173:4173
+      - 80:80
