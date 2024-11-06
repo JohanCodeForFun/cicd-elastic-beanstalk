@@ -31,13 +31,12 @@ jobs:
 
       - name: Build Docker image for React app
         working-directory: ./react-app
-        run: 
+        run: |
           docker build -t react-app .
 
-          echo "Contents of root directory:"
-          ls -l
-
           zip -r deploy.zip . -x '*.git*'
+
+          mv deploy.zip ../deploy.zip
 
       - name: Get timestamp
         uses: gerred/actions/current-time@master
