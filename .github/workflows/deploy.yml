@@ -32,9 +32,11 @@ jobs:
       - name: Build Docker image for React app
         working-directory: ./react-app
         run: |
-          docker build -t react-app .
+          npm install
 
-          zip -r deploy.zip . -x '*.git*'
+          npm run build
+
+          zip -r deploy.zip dist server.js package.json Procfile -x '*.git*'
 
           mv deploy.zip ../deploy.zip
 
