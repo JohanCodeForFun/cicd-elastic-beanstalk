@@ -30,16 +30,17 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Generate deployment package
+        working-directory: ./react-app
         run: |
           echo "Contents of root directory:"
           ls -l
           
           npm run build
-          
+
           echo "Contents of dist directory:"
-          ls -l react-app/dist
+          ls -l dist
           
-          zip -r deploy.zip react-app/dist -x '*.git*'
+          zip -r deploy.zip dist -x '*.git*'
 
 
       - name: Get timestamp
