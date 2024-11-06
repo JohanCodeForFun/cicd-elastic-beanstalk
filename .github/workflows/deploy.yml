@@ -38,6 +38,9 @@ jobs:
 
           mv deploy.zip ../deploy.zip
 
+      - name: Verify contents of deploy.zip
+        run: unzip -l deploy.zip
+
       - name: Get timestamp
         uses: gerred/actions/current-time@master
         id: current-time
