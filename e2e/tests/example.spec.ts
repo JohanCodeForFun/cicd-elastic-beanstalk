@@ -10,7 +10,7 @@ test('has title', async ({ page }) => {
 test('working count button', async ({ page }) => {
   await page.goto('http://localhost:80/');
 
-  const button = page.locator('button');
+  const button = page.locator('button').first();
 
   await expect(button).toHaveText('count is 0');
 
