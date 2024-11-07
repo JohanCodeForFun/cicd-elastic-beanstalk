@@ -10,13 +10,13 @@ test('has title', async ({ page }) => {
 test('working count button', async ({ page }) => {
   await page.goto('http://localhost:80/');
 
-  const button = page.locator('button').first();
+  const countButton = page.getByRole('button', { name: 'count is 0' });
 
-  await expect(button).toHaveText('count is 0');
+  await expect(countButton).toHaveText('count is 0');
 
-  await button.click();
-  await button.click();
-  await button.click();
+  await countButton.click();
+  await countButton.click();
+  await countButton.click();
 
-  await expect(button).toHaveText('count is 3');
+  await expect(countButton).toHaveText('count is 3');
 });
