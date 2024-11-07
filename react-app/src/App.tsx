@@ -9,14 +9,12 @@ function App() {
 
   // Simulated SQL query function
   const runQuery = (input: string) => {
-    // Insecure: Directly using user input in a simulated SQL query
     const query = `SELECT * FROM users WHERE name = '${input}'`;
     console.log('Running query:', query);
   };
 
   // Simulated deserialization function
   const deserialize = (input: string) => {
-    // Insecure: Directly using user input in a simulated deserialization
     try {
       const obj = JSON.parse(input);
       console.log('Deserialized object:', obj);
@@ -43,7 +41,6 @@ function App() {
             placeholder="Enter some text"
           />
           <p>Output:</p>
-          {/* Insecure: Using dangerouslySetInnerHTML without sanitizing user input */}
           <div dangerouslySetInnerHTML={{ __html: userInput }} />
         </div>
         <div>
