@@ -4,7 +4,7 @@ test('has title', async ({ page }) => {
   await page.goto('http://localhost:80/');
 
   // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/CI \/ CD Deployment/);
+  await expect(page).toHaveTitle(/CI && CD Deployment!/);
 });
 
 test('working count button', async ({ page }) => {
