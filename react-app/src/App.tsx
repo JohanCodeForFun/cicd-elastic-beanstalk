@@ -5,6 +5,7 @@ import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [userInput, setUserInput] = useState('');
 
   return (
     <>
@@ -21,13 +22,19 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div>
+        <h2>Unsafe User Input</h2>
+        <input
+          type="text"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder="Enter some text"
+        />
+        <p>Output:</p>
+        {/* Insecure: Using dangerouslySetInnerHTML without sanitizing user input */}
+        <div dangerouslySetInnerHTML={{ __html: userInput }} />
+      </div>
     </>
   )
 }
