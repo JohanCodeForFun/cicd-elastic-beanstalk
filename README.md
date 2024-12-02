@@ -1,50 +1,143 @@
-# React + TypeScript + Vite
+# React TypeScript Application with E2E Testing
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
+This project demonstrates a modern React application built with TypeScript and Vite, featuring end-to-end testing capabilities using Playwright. The application is fully containerized using Docker, making it easy to deploy and test in any environment.
 
-Currently, two official plugins are available:
+## Key Features
+- Modern React development setup with TypeScript
+- Production-ready Docker configuration
+- Automated E2E testing infrastructure
+- Continuous Integration ready with AWS Elastic Beanstalk deployment pipeline
+- ESLint configuration for code quality
+- Multi-stage Docker builds for optimized production images
+- Automated deployment to AWS Elastic Beanstalk infrastructure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technical Stack
+- **Frontend**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Testing**: Playwright for E2E testing
+- **Containerization**: Docker & Docker Compose
+- **Web Server**: Nginx for production deployment
 
-## Expanding the ESLint configuration
+## Architecture
+The project is structured into two main components:
+1. **React Application (`/react-app`)**
+   - Built with React and TypeScript
+   - Uses Vite for fast development and optimized builds
+   - Containerized with Nginx for production deployment
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+2. **E2E Testing Suite (`/e2e`)**
+   - Playwright-based end-to-end testing
+   - Configured for CI/CD environments
+   - Generates comprehensive HTML and JUnit test reports
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Development
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Running Tests
+```bash
+# Run E2E tests
+cd e2e
+npm install
+npx playwright test
 ```
+
+### Docker Deployment
+```bash
+# Build and run the application
+docker-compose up --build
+```
+
+The application will be available at `http://localhost:80`
+
+## Testing Strategy
+- End-to-end testing with Playwright
+- Automated test reporting
+- CI/CD integration support
+- Parallel test execution
+- Cross-browser testing capabilities
+
+## CI/CD Pipeline
+
+### Overview
+The application uses GitHub Actions for continuous integration and deployment to AWS Elastic Beanstalk. The pipeline ensures code quality and runs all tests before deploying to production.
+
+### Pipeline Stages
+
+1. **Build & Test**
+   - Builds the React application
+   - Runs ESLint checks
+   - Executes E2E tests with Playwright
+   - Generates test reports
+
+2. **Docker Build**
+   - Builds production Docker image
+   - Runs container security scanning
+   - Pushes image to Amazon ECR
+
+3. **Deploy to AWS Elastic Beanstalk**
+   - Deploys to staging environment first
+   - Runs smoke tests
+   - Promotes to production if all checks pass
+
+### AWS Infrastructure
+- **Elastic Beanstalk Environment**
+  - Platform: Docker running on 64bit Amazon Linux 2
+  - Instance type: t3.small (adjustable based on load)
+  - Auto-scaling enabled: 2-4 instances
+  - Load balancer: Application Load Balancer
+
+### Deployment Configuration
+```yaml
+# Example Elastic Beanstalk configuration
+option_settings:
+  aws:elasticbeanstalk:application:environment:
+    NODE_ENV: production
+  aws:autoscaling:asg:
+    MinSize: 2
+    MaxSize: 4
+  aws:elasticbeanstalk:container:docker:
+    Memory: 512
+```
+
+### Automated Deployment Process
+1. Tests pass on main branch
+2. Docker image is built and pushed to ECR
+3. Elastic Beanstalk environment is updated
+4. Health checks confirm deployment success
+5. Traffic is gradually shifted to new version
+
+### Rollback Strategy
+- Automatic rollback on deployment failure
+- Health check failures trigger previous version restoration
+- Maximum 5-minute downtime SLA
+
+## Project Structure
+```
+├── react-app/          # React application
+│   ├── src/           # Source code
+│   ├── Dockerfile     # Production Docker configuration
+│   └── vite.config.ts # Vite configuration
+├── e2e/               # End-to-end tests
+│   ├── tests/        # Test specifications
+│   └── Dockerfile    # Testing environment configuration
+└── docker-compose.yaml # Docker composition configuration
+```
+
+## Contributing
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+This project is open-source and available under the MIT License.
